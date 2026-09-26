@@ -1,6 +1,6 @@
 package exception;
 
-public class InvalidException extends RuntimeException {
+public class InvalidException extends Exception {
     public InvalidException(String message) {
         super(message);
     }

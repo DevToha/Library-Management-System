@@ -1,97 +1,79 @@
 package gui;
 
+import service.LibraryService;
+import model.Book;
+import model.Item;
 import exception.DuplicateException;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+
 public class BookPanel extends JPanel {
+    private LibraryService service;
+    private DefaultTableModel tableModel;
+    private JTextField idField, titleField, authorField, isbnField;
 
     public BookPanel(LibraryService service) {
         this.service = service;
+        setLayout(new BorderLayout(10, 10));
 
-        setOpaque(false);
-        setLayout(new BorderLayout(0, 20));
+        // Form Panel
+        JPanel formPanel = new JPanel(new GridLayout(5, 2, 5, 5));
+        formPanel.setBorder(BorderFactory.createTitledBorder("Add New Book"));
 
-        JLabel title = new JLabel("Manage Books");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        idField = new JTextField();
+        titleField = new JTextField();
+        authorField = new JTextField();
+        isbnField = new JTextField();
 
-        JPanel formCard = new MainFrame.GlassPanel();
-        formCard.setLayout(new BoxLayout(formCard, BoxLayout.Y_AXIS));
-        formCard.setBorder(BorderFactory.createEmptyBorder(24, 24, 24, 24));
+        formPanel.add(new JLabel("Book ID:"));
+        formPanel.add(idField);
+        formPanel.add(new JLabel("Title:"));
+        formPanel.add(titleField);
+        formPanel.add(new JLabel("Author:"));
+        formPanel.add(authorField);
+        formPanel.add(new JLabel("ISBN:"));
+        formPanel.add(isbnField);
 
-        String[] types = {"Book", "Periodical", "DigitalMedia"};
-        typeBox = new JComboBox<>(types);
-        typeBox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        typeBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
+        JButton addButton = new JButton("Add Book");
+        formPanel.add(addButton);
 
-        idField = createTextField();
-        titleField = createTextField();
-        categoryField = createTextField();
-        extraField1 = createTextField();
-        extraField2 = createTextField();
+        add(formPanel, BorderLayout.NORTH);
 
-        formCard.add(createField("Type", typeBox));
-        formCard.add(Box.createVerticalStrut(12));
-        formCard.add(createField("Item ID", idField));
-        formCard.add(Box.createVerticalStrut(12));
-        formCard.add(createField("Title", titleField));
-        formCard.add(Box.createVerticalStrut(12));
-        formCard.add(createField("Category", categoryField));
-        formCard.add(Box.createVerticalStrut(12));
-        formCard.add(createField("Author / Publisher / Format", extraField1));
-        formCard.add(Box.createVerticalStrut(12));
-        formCard.add(createField("ISBN / Issue No / File Size", extraField2));
-        formCard.add(Box.createVerticalStrut(20));
-
-        JButton addButton = createButton("Add Item");
-        JButton updateButton = createButton("Update");
-        JButton deleteButton = createButton("Delete");
-        JButton clearButton = createButton("Clear");
-
-        addButton.addActionListener(e -> addItem());
-        updateButton.addActionListener(e -> updateItem());
-        deleteButton.addActionListener(e -> deleteItem());
-        clearButton.addActionListener(e -> clearFields());
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setOpaque(false);
-        buttonPanel.add(addButton);
-        buttonPanel.add(updateButton);
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(clearButton);
-
-        formCard.add(buttonPanel);
-
-        tableModel = new DefaultTableModel(
-                new Object[]{"ID", "Type", "Title", "Category", "Available"}, 0
-        );
-
+        // Table Panel
+        tableModel = new DefaultTableModel(new Object[]{"ID", "Title", "Author", "ISBN", "Status"}, 0);
         JTable table = new JTable(tableModel);
-        table.setRowHeight(32);
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        add(new JScrollPane(table), BorderLayout.CENTER);
 
-        JScrollPane tableScroll = new JScrollPane(table);
+        addButton.addActionListener(e -> {
+            try {
+                Book book = new Book(idField.getText(), titleField.getText(), authorField.getText(), isbnField.getText());
+                service.addItem(book);
+                refreshTable();
+                clearFields();
+            } catch (DuplicateException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
 
-        searchField = new JTextField();
-        searchField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        searchField.setPreferredSize(new Dimension(0, 42));
+        refreshTable();
+    }
 
-        JButton searchButton = createButton("Search");
-        searchButton.addActionListener(e -> searchItems());
+    public void refreshTable() {
+        tableModel.setRowCount(0);
+        for (Item item : service.getAllItems()) {
+            if (item instanceof Book) {
+                Book b = (Book) item;
+                tableModel.addRow(new Object[]{b.getId(), b.getTitle(), b.getAuthor(), b.getIsbn(), b.isAvailable() ? "Available" : "Borrowed"});
+            }
+        }
+    }
 
-        JPanel searchBar = new JPanel(new BorderLayout(12, 0));
-        searchBar.setOpaque(false);
-        searchBar.add(searchField, BorderLayout.CENTER);
-        searchBar.add(searchButton, BorderLayout.EAST);
-
-        JPanel tablePanel = new JPanel(new BorderLayout(0, 15));
-        tablePanel.setOpaque(false);
-        tablePanel.add(searchBar, BorderLayout.NORTH);
-        tablePanel.add(tableScroll, BorderLayout.CENTER);
-
-        add(title, BorderLayout.NORTH);
-        add(formCard, BorderLayout.CENTER);
-        add(tablePanel, BorderLayout.SOUTH);
-
-        loadItems();
+    private void clearFields() {
+        idField.setText("");
+        titleField.setText("");
+        authorField.setText("");
+        isbnField.setText("");
     }
 }

@@ -10,11 +10,21 @@ public class Periodical extends Item {
         this.category = category;
     }
 
-    public String getIssueNumber() { return issueNumber; }
-    public void setIssueNumber(String issueNumber) { this.issueNumber = issueNumber; }
+    public String getIssueNumber() {
+        return issueNumber;
+    }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public void setIssueNumber(String issueNumber) {
+        this.issueNumber = issueNumber;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     @Override
     public String getItemType() {

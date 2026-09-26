@@ -1,4 +1,29 @@
 package model;
 
-public class Transaction {
+import java.io.Serializable;
+import java.util.Date;
+
+public class Transaction implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private String transactionId;
+    private String memberId;
+    private String itemId;
+    private Date issueDate;
+    private Date returnDate;
+
+    public Transaction(String transactionId, String memberId, String itemId, Date issueDate) {
+        this.transactionId = transactionId;
+        this.memberId = memberId;
+        this.itemId = itemId;
+        this.issueDate = issueDate;
+        this.returnDate = null;
+    }
+
+    public String getTransactionId() { return transactionId; }
+    public String getMemberId() { return memberId; }
+    public String getItemId() { return itemId; }
+    public Date getIssueDate() { return issueDate; }
+    public Date getReturnDate() { return returnDate; }
+    public void setReturnDate(Date returnDate) { this.returnDate = returnDate; }
 }

@@ -1,0 +1,9 @@
+Library Management System Report
+================================
+
+Total Items: 3
+Total Members: 1
+Issued: 0
+Returned: 0
+
+Transactions:

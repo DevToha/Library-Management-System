@@ -59,3 +59,15 @@ public class DigitalMediaPanel extends JPanel {
         });
 
         refreshTable();
+    }
+
+    public void refreshTable() {
+        tableModel.setRowCount(0);
+        for (Item item : service.getAllItems()) {
+            if (item instanceof DigitalMedia) {
+                DigitalMedia dm = (DigitalMedia) item;
+                tableModel.addRow(new Object[]{dm.getId(), dm.getTitle(), dm.getFormat(), dm.getFileSizeMB(), dm.isAvailable() ? "Available" : "Checked Out"});
+            }
+        }
+    }
+}

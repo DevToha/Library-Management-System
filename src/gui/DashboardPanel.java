@@ -1,60 +1,98 @@
 package gui;
 
+import model.Book;
+import model.DigitalMedia;
+import model.Item;
+import model.Periodical;
 import service.LibraryService;
 
-<<<<<<< HEAD
 import javax.swing.*;
 import java.awt.*;
 
 public class DashboardPanel extends JPanel {
+
     private LibraryService service;
-    private JLabel totalItemsLabel;
-    private JLabel totalMembersLabel;
-    private JLabel activeTxLabel;
+
+    private static final Color CARD_BORDER = new Color(218, 225, 236);
+    private static final Color TITLE_COLOR = new Color(37, 49, 89);
+    private static final Color LABEL_COLOR = new Color(110, 120, 140);
 
     public DashboardPanel(LibraryService service) {
         this.service = service;
-        setLayout(new GridLayout(1, 3, 20, 20));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-=======
-public class DashboardPanel extends JPanel {
 
+        setBackground(new Color(243, 245, 249));
+        setLayout(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(28, 28, 28, 28));
 
-    public DashboardPanel(LibraryService service) {
-        this.service = service;
-        setLayout();
-        setBorder(BorderFactory.createEmptyBorder());
->>>>>>> 5f849a3b675f3bde74d71c76ff11baab3d6ceff0
+        JLabel title = new JLabel("Dashboard");
+        title.setFont(new Font("Arial", Font.BOLD, 26));
+        title.setForeground(TITLE_COLOR);
+        title.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
-        totalItemsLabel = createCard("Total Items", "0");
-        totalMembersLabel = createCard("Registered Members", "0");
-        activeTxLabel = createCard("Active Loans", "0");
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setOpaque(false);
 
-        add(totalItemsLabel);
-        add(totalMembersLabel);
-        add(activeTxLabel);
+        int books = 0;
+        int periodicals = 0;
+        int digital = 0;
+        int issued = 0;
 
-<<<<<<< HEAD
+        for (Item item : service.getAllItems()) {
+            if (item instanceof Book) {
+                books++;
+            } else if (item instanceof Periodical) {
+                periodicals++;
+            } else if (item instanceof DigitalMedia) {
+                digital++;
+            }
+
+            if (!item.isAvailable()) {
+                issued++;
+            }
+        }
+
+        int total = books + periodicals + + digital;
+        int available = total - issued;
+
+        JPanel grid = new JPanel(new GridLayout(2, 3, 16, 16));
+        grid.setOpaque(false);
+
+        grid.add(infoCard("Books", String.valueOf(books), new Color(44, 102, 191)));
+        grid.add(infoCard("Periodicals", String.valueOf(periodicals), new Color(40, 145, 80)));
+        grid.add(infoCard("Digital Media", String.valueOf(digital), new Color(128, 90, 210)));
+        grid.add(infoCard("Total Members", String.valueOf(service.getAllMembers().size()), new Color(20, 150, 160)));
+        grid.add(infoCard("Issued", String.valueOf(issued), new Color(200, 70, 70)));
+        grid.add(infoCard("Available", String.valueOf(available), new Color(240, 150, 40)));
+
+        centerPanel.add(grid, BorderLayout.NORTH);
+
+        add(title, BorderLayout.NORTH);
+        add(centerPanel, BorderLayout.CENTER);
     }
 
-    private JLabel createCard(String title, String initialValue) {
-        JLabel label = new JLabel("<html><center><h3>" + title + "</h3><h1>" + initialValue + "</h1></center></html>", SwingConstants.CENTER);
-        label.setOpaque(true);
-        label.setBackground(new Color(230, 235, 245));
-        label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        return label;
-    }
+    private JPanel infoCard(String label, String value, Color accent) {
+        JPanel card = new JPanel();
+        card.setBackground(Color.WHITE);
+        card.setLayout(new BorderLayout(0, 10));
+        card.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 4, 0, 0, accent),
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(CARD_BORDER, 1),
+                        BorderFactory.createEmptyBorder(22, 20, 22, 20)
+                )
+        ));
 
+        JLabel titleLabel = new JLabel(label);
+        titleLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        titleLabel.setForeground(LABEL_COLOR);
 
-=======
-        refresh();
-    }
+        JLabel valueLabel = new JLabel(value);
+        valueLabel.setFont(new Font("Arial", Font.BOLD, 34));
+        valueLabel.setForeground(TITLE_COLOR);
 
-    private JLabel createCard(String title, String initialValue) {
-        label.setOpaque(true);
-        label.setBackground();
-        label.setBorder(BorderFactory.createLineBorder());
-        return label;
+        card.add(titleLabel, BorderLayout.NORTH);
+        card.add(valueLabel, BorderLayout.CENTER);
+
+        return card;
     }
->>>>>>> 5f849a3b675f3bde74d71c76ff11baab3d6ceff0
 }

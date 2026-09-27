@@ -1,28 +1,48 @@
 package model;
 
-import java.io.Serializable;
-
-public abstract class Item implements Serializable {
-    private static final long serialVersionUID = 1L;
+public abstract class Item {
 
     private String id;
     private String title;
-    private boolean isAvailable;
+    private String category;
+    private boolean available;
 
-    public Item(String id, String title) {
+    public Item(String id, String title, String category) {
         this.id = id;
         this.title = title;
-        this.isAvailable = true;
+        this.category = category;
+        this.available = true;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public abstract String getType();
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public abstract double calculateLateFee(int daysLate);
 
-    public boolean isAvailable() { return isAvailable; }
-    public void setAvailable(boolean available) { isAvailable = available; }
+    public String getId() {
+        return id;
+    }
 
-    public abstract String getItemType();
+    public String getTitle() {
+        return title;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

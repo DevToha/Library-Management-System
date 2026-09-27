@@ -1,33 +1,39 @@
 package model;
 
 public class Periodical extends Item {
-    private String issueNumber;
-    private String category;
 
-    public Periodical(String id, String title, String issueNumber, String category) {
-        super(id, title);
+    private String publisher;
+    private int issueNumber;
+
+    public Periodical(String id, String title, String category, String publisher, int issueNumber) {
+        super(id, title, category);
+        this.publisher = publisher;
         this.issueNumber = issueNumber;
-        this.category = category;
-    }
-
-    public String getIssueNumber() {
-        return issueNumber;
-    }
-
-    public void setIssueNumber(String issueNumber) {
-        this.issueNumber = issueNumber;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     @Override
-    public String getItemType() {
+    public String getType() {
         return "Periodical";
+    }
+
+    @Override
+    public double calculateLateFee(int daysLate) {
+        return daysLate * 5.0;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public int getIssueNumber() {
+        return issueNumber;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public void setIssueNumber(int issueNumber) {
+        this.issueNumber = issueNumber;
     }
 }

@@ -1,18 +1,24 @@
 package model;
 
 public class Librarian extends Person {
-    private String employeeId;
-    private String department;
 
-    public Librarian(String id, String name, String email, String employeeId, String department) {
-        super(id, name, email);
-        this.employeeId = employeeId;
-        this.department = department;
+    private double salary;
+
+    public Librarian(String id, String name, String email, String phone, double salary) {
+        super(id, name, email, phone);
+        this.salary = salary;
     }
 
-    public String getEmployeeId() { return employeeId; }
-    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+    @Override
+    public String getRole() {
+        return "Librarian";
+    }
 
-    public String getDepartment() { return department; }
-    public void setDepartment(String department) { this.department = department; }
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
 }

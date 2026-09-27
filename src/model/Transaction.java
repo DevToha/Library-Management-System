@@ -1,29 +1,53 @@
 package model;
 
-import java.io.Serializable;
-import java.util.Date;
-
-public class Transaction implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Transaction {
 
     private String transactionId;
     private String memberId;
     private String itemId;
-    private Date issueDate;
-    private Date returnDate;
+    private String issueDate;
+    private String returnDate;
+    private String status;
 
-    public Transaction(String transactionId, String memberId, String itemId, Date issueDate) {
+    public Transaction(String transactionId, String memberId, String itemId,
+                       String issueDate, String returnDate, String status) {
         this.transactionId = transactionId;
         this.memberId = memberId;
         this.itemId = itemId;
         this.issueDate = issueDate;
-        this.returnDate = null;
+        this.returnDate = returnDate;
+        this.status = status;
     }
 
-    public String getTransactionId() { return transactionId; }
-    public String getMemberId() { return memberId; }
-    public String getItemId() { return itemId; }
-    public Date getIssueDate() { return issueDate; }
-    public Date getReturnDate() { return returnDate; }
-    public void setReturnDate(Date returnDate) { this.returnDate = returnDate; }
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public String getReturnDate() {
+        return returnDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setReturnDate(String returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

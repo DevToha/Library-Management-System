@@ -1,23 +1,39 @@
 package model;
 
 public class DigitalMedia extends Item {
-    private String format;
-    private double fileSizeMB;
 
-    public DigitalMedia(String id, String title, String format, double fileSizeMB) {
-        super(id, title);
+    private String format;
+    private double fileSize;
+
+    public DigitalMedia(String id, String title, String category, String format, double fileSize) {
+        super(id, title, category);
         this.format = format;
-        this.fileSizeMB = fileSizeMB;
+        this.fileSize = fileSize;
     }
 
-    public String getFormat() { return format; }
-    public void setFormat(String format) { this.format = format; }
-
-    public double getFileSizeMB() { return fileSizeMB; }
-    public void setFileSizeMB(double fileSizeMB) { this.fileSizeMB = fileSizeMB; }
+    @Override
+    public String getType() {
+        return "DigitalMedia";
+    }
 
     @Override
-    public String getItemType() {
-        return "DigitalMedia";
+    public double calculateLateFee(int daysLate) {
+        return daysLate * 3.0;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public double getFileSize() {
+        return fileSize;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public void setFileSize(double fileSize) {
+        this.fileSize = fileSize;
     }
 }

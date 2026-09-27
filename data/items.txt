@@ -1,3 +1,3 @@
-B101,Java Programming,James Gosling,ISBN-90123
-B102,Data Structures & Algorithms,Robert Lafore,ISBN-45678
-P201,IEEE Software Magazine,Vol 41 No 2,Technology
+Book,11,toha,tia,ad,adfa,true
+Book,dad,afdaadfa,cad,ada,ada,true
+Book,ada,fafa,adfa,ada,aa,true

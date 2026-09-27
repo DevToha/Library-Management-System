@@ -50,3 +50,12 @@ public class DigitalMediaPanel extends JPanel {
                 service.addItem(dm);
                 refreshTable();
                 idField.setText(""); titleField.setText("");
+                formatField.setText(""); sizeField.setText("");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid numeric size in MB.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            } catch (DuplicateException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        refreshTable();

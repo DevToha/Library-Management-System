@@ -25,3 +25,28 @@ public class DigitalMediaPanel extends JPanel {
         titleField = new JTextField();
         formatField = new JTextField();
         sizeField = new JTextField();
+        formPanel.add(new JLabel("Media ID:"));
+        formPanel.add(idField);
+        formPanel.add(new JLabel("Title:"));
+        formPanel.add(titleField);
+        formPanel.add(new JLabel("Format (MP4/PDF/ISO):"));
+        formPanel.add(formatField);
+        formPanel.add(new JLabel("File Size (MB):"));
+        formPanel.add(sizeField);
+
+        JButton addButton = new JButton("Add Digital Media");
+        formPanel.add(addButton);
+
+        add(formPanel, BorderLayout.NORTH);
+
+        tableModel = new DefaultTableModel(new Object[]{"ID", "Title", "Format", "Size (MB)", "Status"}, 0);
+        JTable table = new JTable(tableModel);
+        add(new JScrollPane(table), BorderLayout.CENTER);
+
+        addButton.addActionListener(e -> {
+            try {
+                double size = Double.parseDouble(sizeField.getText().trim());
+                DigitalMedia dm = new DigitalMedia(idField.getText().trim(), titleField.getText().trim(), formatField.getText().trim(), size);
+                service.addItem(dm);
+                refreshTable();
+                idField.setText(""); titleField.setText("");
